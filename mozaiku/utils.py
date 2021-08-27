@@ -1,5 +1,7 @@
-from math import ceil
-from time import time
+from math   import ceil
+from time   import time
+
+from .speed import *
 
 
 __all__ = [
@@ -9,16 +11,17 @@ __all__ = [
 
 
 
-def log_func(self, func, message, *args):
-    if self.log:
+def log_func(func, message, log, *args):
+    if log:
         print(message)
 
-    result = func(*args)
+        result = func(*args)
 
-    if self.log:
         print('\tDone.\n')
 
-    return result
+        return result
+    else:
+        return func(*args)
 
 
 

@@ -46,7 +46,7 @@ To install `ffmpeg` you can go to [this page](https://ffmpeg.org/download.html) 
 
 4. **GENERATE NEW IMAGE STRUCTURE**
 
-> it opens the input image and resize it according to the `image_max_size` value, then it loops through each pixel and gets the closest color to the pixel color, among those saved in the dict from `step 4`, and save those color in a list
+> it opens the input image and resizes it according to the `image_max_size` value, then it loops through each pixel and gets the closest color to the pixel color, among those saved in the dict from `step 4`, and save those color in a list
 
 5. **CREATE MOSAIC**
 

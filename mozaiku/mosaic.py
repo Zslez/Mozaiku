@@ -89,7 +89,7 @@ class MOSAIC:
         if self.clear:
             self.to_clear.append(self.video_path)
 
-        log_func(self, self.download_video, 'Downloading video...')
+        log_func(self.download_video, 'Downloading video...', self.log)
 
         return self.from_video()
 
@@ -107,7 +107,7 @@ class MOSAIC:
         if self.clear:
             self.to_clear.append(self.folder_path)
 
-        log_func(self, self.extract_frames, 'Extracting frames...')
+        log_func(self.extract_frames, 'Extracting frames...', self.log)
 
         return self.from_folder()
 
@@ -123,11 +123,16 @@ class MOSAIC:
           - skip the step of cropping all frames to square
         '''
 
-        log_func(self, self.get_frames, 'Selecting valid frames...', frames_are_already_squares)
+        log_func(
+            self.get_frames,
+            'Selecting valid frames...',
+            self.log,
+            frames_are_already_squares
+        )
 
-        log_func(self, self.generate_new_image, 'Generating list of images...')
+        log_func(self.generate_new_image, 'Generating list of images...', self.log)
 
-        img = log_func(self, self.create_mosaic, 'Creating mosaic...')
+        img = log_func(self.create_mosaic, 'Creating mosaic...', self.log)
 
         if self.clear:
             self.clear_files(self.to_clear + [self.folder_path])
@@ -153,6 +158,10 @@ class MOSAIC:
 
 
     def download_video(self) -> None:
+        '''
+        downloads the best possible quality video from the `self.url` url
+        '''
+
         run(
             f'youtube-dl -o "{self.video_path}" -f best {self.url}',
             shell = True,
@@ -164,7 +173,7 @@ class MOSAIC:
     def get_frames(self, frames_are_already_squares: bool = False) -> None:
         '''
         saves the average color of all frames in `self.folder_path` \
-        skipping duplicates, and resizes and crop the frames
+        skipping duplicates, resizes all frames and save them in a new folder
 
         ## Optional Parameter
         - `frames_are_already_squares`:\n
@@ -228,7 +237,8 @@ class MOSAIC:
 
     def generate_new_image(self) -> None:
         '''
-        something
+        generates a list of colours corresponding to the closest colours of \
+        the average of each frame, previously saved in `self.result`
         '''
 
         image = Image.open(self.image_path).convert(self.type)
@@ -248,7 +258,7 @@ class MOSAIC:
 
         for i in data:
             if i[-1] == 0:
-                self.new_image_colours.append(self.replace_transparent)
+                self.new_image_colours.append(0)
             else:
                 if i not in closest:
                     closest[i] = self.get_closest_colour(self.list_of_colours, i)
@@ -271,7 +281,7 @@ class MOSAIC:
         to the given `colour` from a given list of `colours`
         '''
 
-        min_diff = 1000000
+        min_diff = 200000
         final_colour = 0
 
         red, green, blue = colour[:3]
@@ -301,7 +311,25 @@ class MOSAIC:
             check_without: bool = True
         ) -> str:
         '''
-        something
+        returns the first name that is not already used in th current dir.
+
+        for example, if in the current directory you have:\n
+        - file.txt
+        - file_1.txt
+        - file-1.txt
+        - file_2.txt
+
+        ```py
+        self.get_first_available('file', 'txt')
+        ```
+
+        will return `file_3.txt`, whereas
+
+        ```py
+        self.get_first_available('file', 'txt', sep = '-')
+        ```
+
+        will return `file-2.txt`
         '''
 
         ext = '.' + ext if ext else ext
@@ -348,7 +376,7 @@ class MOSAIC:
         )
 
 
-        used_images = [self.replace_transparent]
+        used_images = [0]
 
         progress_bar = progress_bar_func(
             len(self.new_image_colours),
@@ -361,9 +389,14 @@ class MOSAIC:
 
                 # I use .index because I know all values are different
 
-                img = Image.open(f'{self.folder_path}/{files[key[val.index(i) - 1]]}').convert(self.type)
+                img = Image.open(
+                    f'{self.folder_path}/{files[key[val.index(i) - 1]]}'
+                ).convert(self.type)
 
-                places = [j for j in range(len(self.new_image_colours)) if self.new_image_colours[j] == i]
+                places = [
+                    j for j in range(len(self.new_image_colours))
+                    if self.new_image_colours[j] == i
+                ]
 
                 for k in places:
                     new_im.paste(
@@ -393,6 +426,10 @@ class MOSAIC:
 
 
     def clear_files(self, files: list):
+        '''
+        tries to remove all files and folders listed in `files`
+        '''
+
         for i in files:
             try:
                 os.remove(i)
