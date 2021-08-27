@@ -1,0 +1,35 @@
+# test folders
+tests
+ctests
+videos
+build
+dist
+Mozaiku.egg-info
+
+
+# test files
+test*
+
+
+# test images...
+*.jpg
+*.gif
+*.png
+*.webp
+
+
+# ...but not those inside the "images" folder
+!images
+!images/*
+
+
+# old versions of files
+*_old*
+
+
+# cache files
+__pycache__
+
+
+# others
+*.bat
