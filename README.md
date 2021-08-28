@@ -1,5 +1,8 @@
 # Za Mozaiku - ザ・モザイク
 
+[![Quality](https://www.code-inspector.com/project/26985/score/svg?service=github)](https://www.code-inspector.com/project/26985/score/svg)
+[![PyPI - Downloads](https://img.shields.io/pypi/dd/mozaiku)](https://img.shields.io/pypi/dd/mozaiku)
+
 ![Logo](https://raw.githubusercontent.com/Zslez/Mozaiku/master/images/logo_preview.png)
 
 ## About
@@ -130,6 +133,7 @@ Currently tested on:
 
 * **Windows 10 Home 20H2**
   * Python Versions Tested
+    * `3.7.10`
     * `3.8.6`
 
 ## Contributing
