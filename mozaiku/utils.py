@@ -1,8 +1,6 @@
 from math   import ceil
 from time   import time
 
-from .speed import *
-
 
 __all__ = [
     'progress_bar_func',
@@ -20,8 +18,8 @@ def log_func(func, message, log, *args):
         print('\tDone.\n')
 
         return result
-    else:
-        return func(*args)
+
+    return func(*args)
 
 
 
@@ -32,6 +30,9 @@ def progress_bar_func(
     ):
 
     class Progress:
+        '''
+        real progress bar class
+        '''
         def __init__(self, total, length) -> None:
             self.total = total
             self.length = length
@@ -61,7 +62,7 @@ def progress_bar_func(
             timestr = self.get_time()
 
             print(f'\r[{timestr}] - |{self.fill * fill + empty}| {string}', end = '')
-        
+
 
         def get_time(self):
             end = time() - self.start
@@ -88,6 +89,9 @@ def progress_bar_func(
 
 
     class EmptyProgress:
+        '''
+        fake progress bar class
+        '''
         def update(self):
             pass
 

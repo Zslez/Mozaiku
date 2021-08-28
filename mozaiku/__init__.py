@@ -4,8 +4,8 @@ from subprocess     import run
 
 from .mosaic        import MOSAIC
 
-from .speed         import *
 from .utils         import *
+from .__doc         import *
 
 from . import utils
 
@@ -25,14 +25,16 @@ __all__ = [
 
 
 
-## =============== VARIABLES =============== ##
+## =============== DOC FUNC =============== ##
 
 
 
-supports_transparency = [
-    'png',
-    'gif' # add others, idk
-]
+def __docs(string_before):
+    def deco(func):
+        func.__doc__ = string_before + doc
+        return func
+
+    return deco
 
 
 
@@ -40,6 +42,7 @@ supports_transparency = [
 
 
 
+@__docs(FROM_YOUTUBE_DOCS)
 def from_youtube(
         url: str,
         image_path: str,
@@ -55,44 +58,6 @@ def from_youtube(
         show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
     ) -> Image:
-    '''
-    downloads the video from the given YouTube `url` \
-    and uses frames from that video to create a photo mosaic \
-    of the given `image_path` image
-
-    ## Required Parameters
-
-    - `url`:\n
-      - the url of the YouTube video to download
-    - `image_path`:\n
-      - the path of the input image, \
-    which will become a mosaic
-    - `output_file_name`:\n
-      - the path where the mosaic output will be saved
-    - `image_max_size`:\n
-      - the number of small images \
-    that will be on the longest side of the input image
-    - `frames_size`:\n
-      - the size of the small images in pixel
-
-    ## Optional Parameters
-
-    - `folder_path`:\n
-      - how the folder containing the frames will be called
-    - `fps`:\n
-      - how many frames of each second of the video will be extracted
-    - `log`:\n
-      - whether the program will print when each step \
-    starts and finishes or not
-    - `compression_level`:\n
-      - the level of compression used when saving the final image
-    - `show_progress_bar`:\n
-      - whether a progress bar is shown for the last three steps or not. \
-        this can affect the speed of the program
-    - `clear`:\n
-      - whether temporary files will be deleted or not. \
-    those files include the video downloaded and the folder of frames
-    '''
 
     mosaic = MOSAIC(
         url = url,
@@ -114,6 +79,7 @@ def from_youtube(
 
 
 
+@__docs(FROM_VIDEO_DOCS)
 def from_video(
         video_path: str,
         image_path: str,
@@ -129,43 +95,6 @@ def from_video(
         show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
     ) -> Image:
-    '''
-    uses frames from the given `video_path` video \
-    to create a photo mosaic of the given `image_path` image
-
-    ## Required Parameters
-
-    - `url`:\n
-      - the url of the YouTube video to download
-    - `image_path`:\n
-      - the path of the input image, \
-    which will become a mosaic
-    - `output_file_name`:\n
-      - the path where the mosaic output will be saved
-    - `image_max_size`:\n
-      - the number of small images \
-    that will be on the longest side of the input image
-    - `frames_size`:\n
-      - the size of the small images in pixel
-
-    ## Optional Parameters
-
-    - `folder_path`:\n
-      - how the folder containing the frames will be called
-    - `fps`:\n
-      - how many frames of each second of the video will be extracted
-    - `log`:\n
-      - whether the program will print when each step \
-    starts and finishes or not
-    - `compression_level`:\n
-      - the level of compression used when saving the final image
-    - `show_progress_bar`:\n
-      - whether a progress bar is shown for the last three steps or not. \
-        this can affect the speed of the program
-    - `clear`:\n
-      - whether temporary files will be deleted or not, \
-        such as the downloaded video
-    '''
 
     mosaic = MOSAIC(
         video_path = video_path,
@@ -187,6 +116,7 @@ def from_video(
 
 
 
+@__docs(FROM_FOLDER_DOCS)
 def from_folder(
         folder_path: str,
         image_path: str,
@@ -202,40 +132,6 @@ def from_folder(
         replace_transparent: tuple = (0, 0, 0, 0),
         frames_are_already_squares: bool = False
     ) -> Image:
-    '''
-    uses images from the `folder_path` folder to create a photo mosaic \
-    of the given `image_path` image
-
-    ## Required Parameters
-
-    - `folder_path`:\n
-      - how the folder containing the frames will be called
-    - `image_path`:\n
-      - the path of the input image, \
-    which will become a mosaic
-    - `output_file_name`:\n
-      - the path where the mosaic output will be saved
-    - `image_max_size`:\n
-      - the number of small images \
-    that will be on the longest side of the input image
-    - `frames_size`:\n
-      - the size of the small images in pixel
-
-    ## Optional Parameters
-
-    - `fps`:\n
-      - how many frames of each second of the video will be extracted
-    - `log`:\n
-      - whether the program will print when each step \
-    starts and finishes or not
-    - `compression_level`:\n
-      - the level of compression used when saving the final image
-    - `show_progress_bar`:\n
-      - whether a progress bar is shown for the last three steps or not. \
-        this can affect the speed of the program
-    - `clear`:\n
-      - whether temporary files will be deleted or not
-    '''
 
     mosaic = MOSAIC(
         folder_path = folder_path,
@@ -256,6 +152,7 @@ def from_folder(
 
 
 
+@__docs(RICKROLL_DOCS)
 def rickroll(
         image_path: str,
         output_file_name: str,
@@ -270,49 +167,6 @@ def rickroll(
         show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
     ) -> Image:
-    '''
-    funny shortcut for\n
-
-    ```py
-    mozaiku.from_youtube(
-        url = 'https://youtu.be/dQw4w9WgXcQ',
-        *args
-    )
-    ```
-
-    ## Required Parameters
-
-    - `url`:\n
-      - the url of the YouTube video to download
-    - `image_path`:\n
-      - the path of the input image, \
-    which will become a mosaic
-    - `output_file_name`:\n
-      - the path where the mosaic output will be saved
-    - `image_max_size`:\n
-      - the number of small images \
-    that will be on the longest side of the input image
-    - `frames_size`:\n
-      - the size of the small images in pixel
-
-    ## Optional Parameters
-
-    - `folder_path`:\n
-      - how the folder containing the frames will be called
-    - `fps`:\n
-      - how many frames of each second of the video will be extracted
-    - `log`:\n
-      - whether the program will print when each step \
-    starts and finishes or not
-    - `compression_level`:\n
-      - the level of compression used when saving the final image
-    - `show_progress_bar`:\n
-      - whether a progress bar is shown for the last three steps or not. \
-        this can affect the speed of the program
-    - `clear`:\n
-      - whether temporary files will be deleted or not. \
-    those files include the video downloaded and the folder of frames
-    '''
 
     mosaic = MOSAIC(
         url = 'https://youtu.be/dQw4w9WgXcQ',

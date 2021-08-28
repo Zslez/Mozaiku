@@ -2,7 +2,7 @@ from distutils.dir_util import copy_tree
 from subprocess         import run
 from PIL                import Image
 
-from .utils              import *
+from .utils             import *
 
 import shutil
 import os
@@ -20,6 +20,15 @@ __all__ = [
 
 
 class MOSAIC:
+    '''
+    main MOSAIC class
+    '''
+
+    supports_transparency = [
+        'png',
+        'gif' # add others, idk
+    ]
+
     def __init__(
             self,
             image_path: str,
@@ -70,7 +79,7 @@ class MOSAIC:
 
         self.type = ['RGB', 'RGBA'][
             len(replace_transparent) == 4 and
-            self.image_path.split('.')[-1] in ['png', 'gif']
+            self.image_path.split('.')[-1] in self.supports_transparency
         ]
 
         self.replace_transparent = replace_transparent[:len(self.type)]
@@ -147,11 +156,10 @@ class MOSAIC:
         '''
 
         run(
-            f'ffmpeg -hide_banner -loglevel error' + \
+            'ffmpeg -hide_banner -loglevel error' + \
             ['', ' -stats'][self.log] + \
             f' -i {self.video_path}' \
             f' -r {self.fps} {self.folder_path}/out-%06d.jpg',
-            shell = True,
             check = True
         )
 
@@ -164,7 +172,6 @@ class MOSAIC:
 
         run(
             f'youtube-dl -o "{self.video_path}" -f best {self.url}',
-            shell = True,
             check = True
         )
 
