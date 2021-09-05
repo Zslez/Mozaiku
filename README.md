@@ -1,7 +1,11 @@
 # Za Mozaiku - ザ・モザイク
 
-[![Quality](https://www.code-inspector.com/project/26985/score/svg?service=github)](https://www.code-inspector.com/project/26985/score/svg)
+[![Quality](https://www.code-inspector.com/project/26985/score/svg)](https://www.code-inspector.com/project/26985/score/svg)
 [![PyPI - Downloads](https://img.shields.io/pypi/dd/mozaiku)](https://img.shields.io/pypi/dd/mozaiku)
+
+[![PyPI - Wheel](https://img.shields.io/pypi/wheel/mozaiku)](https://img.shields.io/pypi/wheel/mozaiku)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mozaiku)](https://img.shields.io/pypi/pyversions/mozaiku)
+[![PyPI](https://img.shields.io/pypi/v/mozaiku)](https://img.shields.io/pypi/v/mozaiku)
 
 ![Logo](https://raw.githubusercontent.com/Zslez/Mozaiku/master/images/logo_preview.png)
 
@@ -12,19 +16,27 @@ Although it may be slow depending on various things, such as the size of the out
 
 ## Installation
 
-to install only the `mozaiku` package run in your terminal
+to install only the `mozaiku` package run in your terminal to download the latest stable version
 
 ```bash
 pip install mozaiku
 ```
 
-if you need also `youtube-dl` features install it running the command
+otherwise you can also download it from GitHub, but it may contain untested code
+
+```bash
+pip install git+https://github.com/Zslez/Mozaiku.git
+```
+
+if you need also `youtube-dl` features, install it running the command
 
 ```bash
 pip install -U youtube-dl
 ```
 
 To install `ffmpeg` you can go to [this page](https://ffmpeg.org/download.html) and download it there, however if you're **not** on Windows, you should be able to install it using your package manager in your terminal.
+
+Note however that I haven't tested it on other operating systems yet. See [tests](#tests) for more informations.
 
 ## How the program works
 
@@ -53,7 +65,7 @@ To install `ffmpeg` you can go to [this page](https://ffmpeg.org/download.html) 
 
 5. **CREATE MOSAIC**
 
-> it gets, from the folder of frames, the frames corresponding to the colours saved in the list from `step 5`, and places those frames in a new big image
+> it gets, from the folder of frames, the frames corresponding to the colours saved in the list from `step 4`, and places those frames in a new big image
 
 ## Example
 

@@ -3,7 +3,7 @@ from setuptools import setup
 with open('README.md', encoding = 'utf-8') as f:
     setup(
         name = 'Mozaiku',
-        version = '1.0.3',
+        version = '1.0.4',
         description = 'Use YouTube urls, videos and folder of images to create photo mosaics with 1 line of code.',
         long_description = f.read().replace(
             ' - ザ・モザイク', '\n\nif you like the project, '\

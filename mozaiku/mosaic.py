@@ -98,7 +98,7 @@ class MOSAIC:
         if self.clear:
             self.to_clear.append(self.video_path)
 
-        log_func(self.download_video, 'Downloading video...', self.log)
+        log_func(self.download_video, 'Downloading video', self.log)
 
         return self.from_video()
 
@@ -116,7 +116,7 @@ class MOSAIC:
         if self.clear:
             self.to_clear.append(self.folder_path)
 
-        log_func(self.extract_frames, 'Extracting frames...', self.log)
+        log_func(self.extract_frames, 'Extracting frames', self.log)
 
         return self.from_folder()
 
@@ -134,14 +134,14 @@ class MOSAIC:
 
         log_func(
             self.get_frames,
-            'Selecting valid frames...',
+            'Selecting valid frames',
             self.log,
             frames_are_already_squares
         )
 
-        log_func(self.generate_new_image, 'Generating list of images...', self.log)
+        log_func(self.generate_new_image, 'Generating list of images', self.log)
 
-        img = log_func(self.create_mosaic, 'Creating mosaic...', self.log)
+        img = log_func(self.create_mosaic, 'Creating mosaic', self.log)
 
         if self.clear:
             self.clear_files(self.to_clear + [self.folder_path])
@@ -418,17 +418,26 @@ class MOSAIC:
 
             progress_bar.update()
 
-        new_im.save(
-            self.get_first_available(
-                '.'.join(self.output_file_name.split('.')[:-1]),
-                self.output_file_name.split('.')[-1]
-            ),
-            compression_level = self.compression_level
-        )
-
         progress_bar.end()
 
+        self.save(new_im)
+
         return new_im
+
+
+
+    def save(self, im: Image):
+        file_name = self.get_first_available(
+            '.'.join(self.output_file_name.split('.')[:-1]),
+            self.output_file_name.split('.')[-1]
+        )
+
+        log_func(
+            im.save,
+            'Saving mosaic',
+            self.log, file_name,
+            compression_level = self.compression_level
+        )
 
 
 

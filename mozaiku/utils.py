@@ -9,11 +9,11 @@ __all__ = [
 
 
 
-def log_func(func, message, log, *args):
+def log_func(func, message, log, *args, **kwargs):
     if log:
-        print(message)
+        print(message + '...')
 
-        result = func(*args)
+        result = func(*args, **kwargs)
 
         print('\tDone.\n')
 
