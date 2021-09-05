@@ -38,7 +38,8 @@ class MOSAIC:
 
             url: str = None,
             video_path: str = None,
-            folder_path: str = 'frames',
+            folder_path: str = None,
+            folder: str = 'frames',
 
             fps: int = 3,
             log: bool = True,
@@ -60,6 +61,7 @@ class MOSAIC:
         self.url = url
         self.video_path = video_path
         self.folder_path = folder_path
+        self.folder = folder
 
         self.fps = fps
         self.log = log
@@ -83,6 +85,24 @@ class MOSAIC:
         ]
 
         self.replace_transparent = replace_transparent[:len(self.type)]
+
+        self.checks()
+
+
+
+    def checks(self):
+        error = ''
+
+        for i in (self.image_path, self.video_path, self.folder_path):
+            if i and not os.path.exists(i):
+                error += f'No such file or directory: \'{i}\'\n'
+        
+        if not any([self.url, self.video_path, self.folder_path]):
+            error += '\nAt least one between url, video_path and folder_path should be set'
+
+        if error:
+            print(error.strip())
+            raise FileNotFoundError
 
 
 
@@ -110,7 +130,7 @@ class MOSAIC:
         to create a photo mosaic of the given `image_path` image
         '''
 
-        self.folder_path = self.get_first_available(self.folder_path, '')
+        self.folder_path = self.get_first_available(self.folder, '')
         os.mkdir(self.folder_path)
 
         if self.clear:
@@ -142,6 +162,8 @@ class MOSAIC:
         log_func(self.generate_new_image, 'Generating list of images', self.log)
 
         img = log_func(self.create_mosaic, 'Creating mosaic', self.log)
+
+        log_func(self.save, 'Saving image', self.log)
 
         if self.clear:
             self.clear_files(self.to_clear + [self.folder_path])
@@ -420,13 +442,11 @@ class MOSAIC:
 
         progress_bar.end()
 
-        self.save(new_im)
-
         return new_im
 
 
 
-    def save(self, im: Image):
+    def save(self, im):
         file_name = self.get_first_available(
             '.'.join(self.output_file_name.split('.')[:-1]),
             self.output_file_name.split('.')[-1]

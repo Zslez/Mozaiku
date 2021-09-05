@@ -28,6 +28,19 @@ mozaiku.from_youtube(
 ```
 '''
 
+
+SAMPLE_DOCS = '''
+shortcut for\n
+
+```py
+mozaiku.from_youtube(
+    frames_size = 1,
+    image_max_size = <size of 'image_path' image>
+    *args
+)
+```
+'''
+
 doc = '''
 ## Required Parameters
 

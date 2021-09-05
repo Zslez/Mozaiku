@@ -1,6 +1,4 @@
-from shutil         import rmtree
 from PIL            import Image
-from subprocess     import run
 
 from .mosaic        import MOSAIC
 
@@ -8,8 +6,6 @@ from .utils         import *
 from .__doc         import *
 
 from . import utils
-
-import os
 
 
 
@@ -53,7 +49,7 @@ def from_youtube(
         fps: int = 3,
         log: bool = True,
         clear: bool = True,
-        folder_path: str = 'frames',
+        folder: str = 'frames',
         compression_level: int = 6,
         show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
@@ -69,7 +65,7 @@ def from_youtube(
         fps = fps,
         log = log,
         clear = clear,
-        folder_path = folder_path,
+        folder = folder,
         compression_level = compression_level,
         show_progress_bar = show_progress_bar,
         replace_transparent = replace_transparent
@@ -90,7 +86,7 @@ def from_video(
         fps: int = 3,
         log: bool = True,
         clear: bool = True,
-        folder_path: str = 'frames',
+        folder: str = 'frames',
         compression_level: int = 6,
         show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
@@ -106,7 +102,7 @@ def from_video(
         fps = fps,
         log = log,
         clear = clear,
-        folder_path = folder_path,
+        folder = folder,
         compression_level = compression_level,
         show_progress_bar = show_progress_bar,
         replace_transparent = replace_transparent
@@ -162,7 +158,7 @@ def rickroll(
         fps: int = 3,
         log: bool = True,
         clear: bool = True,
-        folder_path: str = 'frames',
+        folder: str = 'frames',
         compression_level: int = 6,
         show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
@@ -178,7 +174,7 @@ def rickroll(
         fps = fps,
         log = log,
         clear = clear,
-        folder_path = folder_path,
+        folder = folder,
         compression_level = compression_level,
         show_progress_bar = show_progress_bar,
         replace_transparent = replace_transparent
@@ -188,15 +184,70 @@ def rickroll(
 
 
 
+@__docs(SAMPLE_DOCS)
+def sample(
+        image_path: str,
+        output_file_name: str,
+
+        url: str = None,
+        video_path: str = None,
+        folder_path: str = None,
+        folder: str = 'frames',
+
+        fps: int = 3,
+        log: bool = True,
+        clear: bool = True,
+        compression_level: int = 6,
+        show_progress_bar: bool = False,
+        replace_transparent: tuple = (0, 0, 0, 0)
+    ):
+    import os
+
+    if not os.path.exists(image_path):
+        print(f'No such file or directory: \'{image_path}\'')
+        raise FileNotFoundError
+
+    im = Image.open(image_path)
+    image_max_size = max(im.size)
+    im.close()
+
+    mosaic = MOSAIC(
+        image_path = image_path,
+        output_file_name = output_file_name,
+        image_max_size = image_max_size,
+        frames_size = 1,
+
+        url = url,
+        video_path = video_path,
+        folder_path = folder_path,
+        folder = folder,
+
+        fps = fps,
+        log = log,
+        clear = clear,
+        compression_level = compression_level,
+        show_progress_bar = show_progress_bar,
+        replace_transparent = replace_transparent
+    )
+
+    results = {}
+
+    if url:
+        results['url'] = mosaic.from_youtube()
+
+    if video_path:
+        results['video'] = mosaic.from_video()
+
+    if folder_path:
+        results['folder'] = mosaic.from_folder()
+
+    del os
+
+
+
 ## ================= CLEAR ================= ##
 
 
-
-del os
-del run
-del rmtree
-
-del Image
 
 for i in utils.__all__:
     del globals()[i]
