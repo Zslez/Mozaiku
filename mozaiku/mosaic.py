@@ -96,7 +96,7 @@ class MOSAIC:
         for i in (self.image_path, self.video_path, self.folder_path):
             if i and not os.path.exists(i):
                 error += f'No such file or directory: \'{i}\'\n'
-        
+
         if not any([self.url, self.video_path, self.folder_path]):
             error += '\nAt least one between url, video_path and folder_path should be set'
 
@@ -446,14 +446,14 @@ class MOSAIC:
 
 
 
-    def save(self, im):
+    def save(self, image: Image) -> None:
         file_name = self.get_first_available(
             '.'.join(self.output_file_name.split('.')[:-1]),
             self.output_file_name.split('.')[-1]
         )
 
         log_func(
-            im.save,
+            image.save,
             'Saving mosaic',
             self.log, file_name,
             compression_level = self.compression_level
