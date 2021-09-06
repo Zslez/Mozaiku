@@ -163,7 +163,7 @@ class MOSAIC:
 
         img = log_func(self.create_mosaic, 'Creating mosaic', self.log)
 
-        log_func(self.save, 'Saving image', self.log)
+        log_func(self.save, 'Saving image', self.log, img)
 
         if self.clear:
             self.clear_files(self.to_clear + [self.folder_path])

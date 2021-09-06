@@ -1,6 +1,6 @@
 # Za Mozaiku - ザ・モザイク
 
-[![Quality](https://www.code-inspector.com/project/26985/score/svg?service=github)](https://www.code-inspector.com/project/26985/score/svg)
+[![Quality](https://www.code-inspector.com/project/26985/score/svg)](https://www.code-inspector.com/project/26985/score/svg)
 [![PyPI - Downloads](https://img.shields.io/pypi/dd/mozaiku)](https://img.shields.io/pypi/dd/mozaiku)
 
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/mozaiku)](https://img.shields.io/pypi/wheel/mozaiku)
