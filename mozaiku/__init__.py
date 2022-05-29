@@ -1,11 +1,11 @@
-from PIL            import Image
+from PIL        import Image
 
-from .mosaic        import MOSAIC
+from .mosaic    import MOSAIC
 
-from .utils         import *
-from .__doc         import *
+from .utils     import *
+from .__doc     import *
 
-from . import utils
+from .          import utils
 
 
 
@@ -188,17 +188,12 @@ def rickroll(
 def sample(
         image_path: str,
         output_file_name: str,
+        sample_image: str,
 
-        url: str = None,
-        video_path: str = None,
-        folder_path: str = None,
-        folder: str = 'frames',
-
-        fps: int = 3,
         log: bool = True,
         clear: bool = True,
+        folder: str = 'frames',
         compression_level: int = 6,
-        show_progress_bar: bool = False,
         replace_transparent: tuple = (0, 0, 0, 0)
     ):
     import os
@@ -214,34 +209,20 @@ def sample(
     mosaic = MOSAIC(
         image_path = image_path,
         output_file_name = output_file_name,
+        sample_image = sample_image,
         image_max_size = image_max_size,
         frames_size = 1,
 
-        url = url,
-        video_path = video_path,
-        folder_path = folder_path,
-        folder = folder,
-
-        fps = fps,
         log = log,
         clear = clear,
+        folder = folder,
         compression_level = compression_level,
-        show_progress_bar = show_progress_bar,
         replace_transparent = replace_transparent
     )
 
-    results = {}
-
-    if url:
-        results['url'] = mosaic.from_youtube()
-
-    if video_path:
-        results['video'] = mosaic.from_video()
-
-    if folder_path:
-        results['folder'] = mosaic.from_folder()
-
     del os
+
+    return mosaic.from_image()
 
 
 

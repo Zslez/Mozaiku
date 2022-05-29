@@ -7,7 +7,7 @@ with open('README.md', encoding = 'utf-8') as f:
         description = 'Use YouTube urls, videos and folder of images '\
             'to create photo mosaics with 1 line of code.',
         long_description = f.read().replace(
-            ' - ザ・モザイク', '\n\nif you like the project, '\
+            ' - ザ・モザイク', '\n\nIf you like the project, '\
             'consider starring the [repository](https://github.com/Zslez/Mozaiku) on GitHub'
         ).replace('* [ ]', '*'),
         long_description_content_type = 'text/markdown',

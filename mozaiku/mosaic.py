@@ -33,6 +33,7 @@ class MOSAIC:
             self,
             image_path: str,
             output_file_name: str,
+            sample_image: str,
             image_max_size: int,
             frames_size: int,
 
@@ -53,6 +54,7 @@ class MOSAIC:
 
         self.image_path = image_path
         self.output_file_name = output_file_name
+        self.sample_image = sample_image
         self.image_max_size = image_max_size
         self.frames_size = frames_size
 
@@ -79,12 +81,9 @@ class MOSAIC:
 
         self.to_clear = [] if clear else None
 
-        self.type = ['RGB', 'RGBA'][
-            len(replace_transparent) == 4 and
-            self.image_path.split('.')[-1] in self.supports_transparency
-        ]
+        self.type = None
 
-        self.replace_transparent = replace_transparent[:len(self.type)]
+        self.replace_transparent = replace_transparent
 
         self.checks()
 
@@ -103,6 +102,11 @@ class MOSAIC:
         if error:
             print(error.strip())
             raise FileNotFoundError
+
+        img = Image.open(self.image_path)
+        self.type = img.mode
+        self.replace_transparent = self.replace_transparent[:len(self.type)]
+        img.close()
 
 
 
@@ -169,6 +173,62 @@ class MOSAIC:
             self.clear_files(self.to_clear + [self.folder_path])
 
         return img
+
+
+
+    def from_image(self) -> Image:
+        '''
+        something
+        '''
+
+        data = Image.open(self.image_path).convert(self.type).getdata()
+
+        self.new_image_colours = []
+        closest = {}
+
+        for i in data:
+            if i[-1] == 0:
+                self.new_image_colours.append(0)
+            else:
+                if i not in closest:
+                    closest[i] = self.get_closest_colour(self.list_of_colours, i)
+
+                self.new_image_colours.append(closest[i])
+
+        for i in range(len(data)):
+            data[i] = self.new_image_colours[i]
+
+
+
+    def get_pixels(self) -> None:
+        '''
+        saves the average color of all frames in `self.folder_path` \
+        skipping duplicates, resizes all frames and save them in a new folder
+        '''
+
+        count = 1
+
+        result = {0: self.replace_transparent}
+        values = [self.replace_transparent]
+
+        pixels = Image.open(self.sample_image).getdata()
+
+        for i in pixels:
+            with Image.open(self.folder_path + '/' + i) as image:
+                res = image.resize((1, 1)).getdata()[0]
+
+                if len(res) == 3 and self.type == 'RGBA':
+                    res += (255,)
+
+                if res not in values:
+                    values.append(res)
+                    result[count] = res
+
+                count += 1
+
+        self.size = image.size[0]
+        self.result = result
+        self.list_of_colours = result.values()
 
 
 
